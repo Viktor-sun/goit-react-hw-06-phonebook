@@ -1,10 +1,11 @@
 import React from 'react';
 import ContactListItem from './ContactListItem';
+import './ContactList.scss';
 
 const ContactList = ({ filterContacts, onDeleteContacts }) => (
-  <ul>
+  <ul className="contacts">
     {filterContacts.map(({ id, name, number }) => (
-      <li key={id}>
+      <li key={id} className="contacts__item">
         <ContactListItem
           name={name}
           number={number}

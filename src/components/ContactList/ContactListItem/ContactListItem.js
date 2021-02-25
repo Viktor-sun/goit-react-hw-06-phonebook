@@ -2,11 +2,15 @@ import React from 'react';
 
 const ContactListItem = ({ name, number, onDeleteContacts, id }) => (
   <>
-    <p>
+    <span>
       {name}: {number}
-    </p>
+    </span>
 
-    <button type="button" onClick={() => onDeleteContacts(id)}>
+    <button
+      className="contacts__button"
+      type="button"
+      onClick={() => onDeleteContacts(id)}
+    >
       Delete
     </button>
   </>

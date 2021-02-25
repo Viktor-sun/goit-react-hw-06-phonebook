@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
+import Container from './components/Container';
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
 import ContactList from './components/ContactList';
+import './App.scss';
 
 class App extends Component {
   state = {
@@ -57,19 +59,20 @@ class App extends Component {
     const filterContacts = this.getFilterContacts();
 
     return (
-      <>
-        <h1>Phonebook</h1>
+      <Container>
+        <div className="wrapper-title">
+          <h1 className="title">Phonebook</h1>
+        </div>
+
         <ContactForm onSubmit={this.handleFormSubmit} />
 
-        <section>
-          <h2>Contacts</h2>
-          <Filter value={filter} onChange={this.changeFilter} />
-          <ContactList
-            filterContacts={filterContacts}
-            onDeleteContacts={this.deleteContacts}
-          />
-        </section>
-      </>
+        <h2 className="contacts-title">Contacts</h2>
+        <Filter value={filter} onChange={this.changeFilter} />
+        <ContactList
+          filterContacts={filterContacts}
+          onDeleteContacts={this.deleteContacts}
+        />
+      </Container>
     );
   }
 }
