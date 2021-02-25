@@ -9,10 +9,10 @@ import './App.scss';
 class App extends Component {
   state = {
     contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+      { id: 'id-1', name: 'Rosie Simpson', number: '+380301478866' },
+      { id: 'id-2', name: 'Hermione Kline', number: '+380306987745' },
+      { id: 'id-3', name: 'Eden Clements', number: '+380102367488' },
+      { id: 'id-4', name: 'Annie Copeland', number: '+380403697895' },
     ],
     filter: '',
   };
@@ -67,7 +67,7 @@ class App extends Component {
         <ContactForm onSubmit={this.handleFormSubmit} />
 
         <h2 className="contacts-title">Contacts</h2>
-        <Filter value={filter} onChange={this.changeFilter} />
+        <Filter inputValue={filter} onChange={this.changeFilter} />
         <ContactList
           filterContacts={filterContacts}
           onDeleteContacts={this.deleteContacts}
