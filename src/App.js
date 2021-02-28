@@ -8,14 +8,27 @@ import './App.scss';
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '+380301478866' },
-      { id: 'id-2', name: 'Hermione Kline', number: '+380306987745' },
-      { id: 'id-3', name: 'Eden Clements', number: '+380102367488' },
-      { id: 'id-4', name: 'Annie Copeland', number: '+380403697895' },
-    ],
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const contactsString = localStorage.getItem('contacts');
+    const parseContacts = JSON.parse(contactsString);
+
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const nextContacts = this.state.contacts;
+    const prevContacts = prevState.contacts;
+
+    if (nextContacts !== prevContacts) {
+      localStorage.setItem('contacts', JSON.stringify(nextContacts));
+    }
+  }
 
   handleFormSubmit = data => {
     const { name, number } = data;
