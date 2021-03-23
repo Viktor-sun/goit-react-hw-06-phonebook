@@ -1,49 +1,39 @@
-import { createStore, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { configureStore } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import contactsReducer from './contacts/contacts-reducer';
 
-// const initialState = {
-//   contacts: {
-//     items: [],
-//     filter: '',
-//   },
-// };
-
-// ====================
-const getPreloadedState = () => {
-  const contactsString = localStorage.getItem('contacts');
-  const parseContacts = JSON.parse(contactsString);
-
-  if (parseContacts) {
-    return {
-      contacts: {
-        items: parseContacts,
-        filter: '',
-      },
-    };
-  }
+const persistConfig = {
+  key: 'contacts',
+  storage,
+  whitelist: ['items'],
 };
-const preloadedState = getPreloadedState();
 
-// const preloadedParse = localStorage.getItem('contacts')
-//   ? JSON.parse(localStorage.getItem('contacts'))
-//   : {};
+const persistedReducer = persistReducer(persistConfig, contactsReducer);
 
-// =========================
-
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
+const store = configureStore({
+  reducer: {
+    contacts: persistedReducer,
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(logger),
+  devTools: process.env.NODE_ENV === 'development',
 });
 
-const store = createStore(rootReducer, preloadedState, composeWithDevTools());
+const persistor = persistStore(store);
 
-// ================================
-store.subscribe(() => {
-  localStorage.setItem(
-    'contacts',
-    JSON.stringify(store.getState().contacts.items),
-  );
-});
-// =====================================
-
-export default store;
+export default { store, persistor };
