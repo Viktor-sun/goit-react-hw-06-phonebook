@@ -1,0 +1,24 @@
+{
+  "contacts": [
+    {
+      "name": "Annie Copeland",
+      "number": "+380403697895",
+      "id": 2
+    },
+    {
+      "name": "Eden Clements",
+      "number": "+380102367488",
+      "id": 3
+    },
+    {
+      "name": "Rosie Simpson",
+      "number": "+380301478866",
+      "id": 4
+    },
+    {
+      "name": "Vasya Pupkin",
+      "number": "+380505129983",
+      "id": 5
+    }
+  ]
+}
