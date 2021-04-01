@@ -12,11 +12,13 @@ const getFilterContacts = createSelector(
   (contacts, filter) => {
     const normalizedFilter = filter.toLocaleLowerCase();
 
-    return contacts.filter(
-      ({ name, number }) =>
-        name.toLocaleLowerCase().includes(normalizedFilter) ||
-        number.includes(normalizedFilter),
-    );
+    if (normalizedFilter || normalizedFilter === '') {
+      return contacts.filter(
+        ({ name, number }) =>
+          name.toLocaleLowerCase().includes(normalizedFilter) ||
+          number.includes(normalizedFilter),
+      );
+    }
   },
 );
 
