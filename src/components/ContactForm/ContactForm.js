@@ -20,7 +20,7 @@ class ContactForm extends Component {
     const { name } = this.state;
     const { contacts, onSubmit } = this.props;
 
-    contacts.some(contact => contact.name === name)
+    contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())
       ? alert(`${name} is already in contacts!`)
       : onSubmit(this.state);
 
