@@ -1,71 +1,43 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Loader from 'react-loader-spinner';
-import { contactsOperations } from './redux/contacts';
-import { contactsSelectors } from './redux/contacts';
-import Container from './components/Container';
-import ContactForm from './components/ContactForm';
-import Filter from './components/Filter';
-import ContactList from './components/ContactList';
-import Title from './components/Title';
+import React, { lazy, Suspense } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import AppBar from './components/AppBar';
+import Spinner from './components/Spinner';
+import routes from './routes';
 import './App.scss';
 
-class App extends Component {
-  state = {};
-  componentDidMount() {
-    this.props.fetchContacts();
-  }
+const HomePage = lazy(() =>
+  import('./pages/HomePage/HomePage.js' /* webpackChunkName: "home-page" */),
+);
 
-  render() {
-    return (
-      <Container>
-        {this.props.isLoading && (
-          <Loader
-            type="Audio"
-            color="#fbd62a"
-            height={100}
-            width={100}
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-        )}
+const ContactsPage = lazy(() =>
+  import(
+    './pages/ContactsPage/ContactsPage.js' /* webpackChunkName: "contacts-page" */
+  ),
+);
 
-        <Title />
+const RegisterPage = lazy(() =>
+  import(
+    './pages/RegisterPage/RegisterPage.js' /* webpackChunkName: "register-page" */
+  ),
+);
 
-        <ContactForm />
+const LoginPage = lazy(() =>
+  import('./pages/LoginPage/LoginPage' /* webpackChunkName: "contacts-page" */),
+);
 
-        <h2 className="contacts-title">Contacts</h2>
-        <Filter />
-        <ContactList />
-      </Container>
-    );
-  }
-}
+const App = () => (
+  <>
+    <AppBar />
 
-const mapStateToProps = state => ({
-  isLoading: contactsSelectors.getLoading(state),
-});
+    <Suspense fallback={<Spinner />}>
+      <Switch>
+        <Route exact path={routes.home} component={HomePage} />
+        <Route exact path={routes.contacts} component={ContactsPage} />
+        <Route exact path={routes.register} component={RegisterPage} />
+        <Route exact path={routes.login} component={LoginPage} />
+      </Switch>
+    </Suspense>
+  </>
+);
 
-const mapDispatchToProps = dispatch => ({
-  fetchContacts: () => dispatch(contactsOperations.fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-// const App = () => (
-//   <Container>
-//     <Title />
-
-//     <ContactForm />
-
-//     <h2 className="contacts-title">Contacts</h2>
-//     <Filter />
-//     <ContactList />
-//   </Container>
-// );
-
-// export default App;
+export default App;

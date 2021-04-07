@@ -1,0 +1,10 @@
+@import '../../assets/styles/shared.scss';
+
+.Navlink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.Navlink-active {
+  color: $accentColor;
+}
