@@ -1,0 +1,10 @@
+@import '../../assets/styles/shared.scss';
+
+.contacts-title {
+  font-size: 50px;
+  text-align: center;
+  color: $accentColor;
+  text-shadow: 0 -1px 15px black, 0 1px 0 #7f6303, 0 2px 0 #846703,
+    0 0 0 #896b03, 0 1px 0 #8e6f03, 0 2px 0 #937203,
+    0 2px 30px rgba(252, 223, 92, 0.6);
+}
