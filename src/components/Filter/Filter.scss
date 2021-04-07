@@ -1,3 +1,5 @@
+@import '../../assets/styles/shared.scss';
+
 .filter__field {
   outline: none;
   display: block;
@@ -5,7 +7,7 @@
   border: 2px solid #ccc;
   padding: 10px;
   &:focus {
-    border: 2px solid #fbd62a;
+    border: 2px solid $accentColor;
   }
 }
 
@@ -17,7 +19,7 @@
   border: 2px solid #ccc;
   padding: 10px;
   &:focus {
-    border: 2px solid #fbd62a;
+    border: 2px solid $accentColor;
   }
 }
 
