@@ -9,6 +9,12 @@ const itemsReducer = createReducer([], {
     state.filter(({ id }) => id !== payload),
 });
 
+const errorReducer = createReducer(null, {
+  [actions.fetchContactsError]: (_, { payload }) => payload,
+  [actions.addContactError]: (_, { payload }) => payload,
+  [actions.deleteContactsError]: (_, { payload }) => payload,
+});
+
 const filterReducer = createReducer('', {
   [actions.changeFilter]: (_, { payload }) => payload,
 });
@@ -29,4 +35,5 @@ export default combineReducers({
   items: itemsReducer,
   filter: filterReducer,
   loading: loadingReducer,
+  error: errorReducer,
 });

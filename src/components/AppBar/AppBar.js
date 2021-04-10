@@ -7,9 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
+import { connect } from 'react-redux';
 import Navigation from '../Navigation';
 import AuthNav from '../AuthNav';
 import UserMenu from '../UserMenu';
+import { authSelectors } from '../../redux/auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ isAuthenticated }) => {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -56,12 +58,15 @@ const Header = () => {
             Phonebook
           </Typography>
 
-          <AuthNav />
-          <UserMenu />
+          {isAuthenticated ? <UserMenu /> : <AuthNav />}
         </Toolbar>
       </Container>
     </AppBar>
   );
 };
 
-export default Header;
+const mapStateToProps = state => ({
+  isAuthenticated: authSelectors.getIsAuthenticated(state),
+});
+
+export default connect(mapStateToProps)(Header);

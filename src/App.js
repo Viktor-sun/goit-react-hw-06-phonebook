@@ -1,8 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import AppBar from './components/AppBar';
 import Spinner from './components/Spinner';
 import routes from './routes';
+import { authOperations } from './redux/auth';
 import './App.scss';
 
 const HomePage = lazy(() =>
@@ -25,19 +27,48 @@ const LoginPage = lazy(() =>
   import('./pages/LoginPage/LoginPage' /* webpackChunkName: "contacts-page" */),
 );
 
-const App = () => (
-  <>
-    <AppBar />
+class App extends Component {
+  state = {};
 
-    <Suspense fallback={<Spinner />}>
-      <Switch>
-        <Route exact path={routes.home} component={HomePage} />
-        <Route exact path={routes.contacts} component={ContactsPage} />
-        <Route exact path={routes.register} component={RegisterPage} />
-        <Route exact path={routes.login} component={LoginPage} />
-      </Switch>
-    </Suspense>
-  </>
-);
+  componentDidMount() {
+    this.props.getTokenCurrenUser();
+  }
 
-export default App;
+  render() {
+    return (
+      <>
+        <AppBar />
+
+        <Suspense fallback={<Spinner />}>
+          <Switch>
+            <Route exact path={routes.home} component={HomePage} />
+            <Route exact path={routes.contacts} component={ContactsPage} />
+            <Route exact path={routes.register} component={RegisterPage} />
+            <Route exact path={routes.login} component={LoginPage} />
+          </Switch>
+        </Suspense>
+      </>
+    );
+  }
+}
+
+// const App = () => (
+//   <>
+//     <AppBar />
+
+//     <Suspense fallback={<Spinner />}>
+//       <Switch>
+//         <Route exact path={routes.home} component={HomePage} />
+//         <Route exact path={routes.contacts} component={ContactsPage} />
+//         <Route exact path={routes.register} component={RegisterPage} />
+//         <Route exact path={routes.login} component={LoginPage} />
+//       </Switch>
+//     </Suspense>
+//   </>
+// );
+
+const mapStateToProps = {
+  getTokenCurrenUser: authOperations.getCurrentUser,
+};
+
+export default connect(null, mapStateToProps)(App);

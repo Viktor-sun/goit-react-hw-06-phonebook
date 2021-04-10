@@ -52,15 +52,11 @@ const logOut = () => async dispatch => {
 };
 
 const getCurrentUser = () => async (dispatch, getState) => {
-  // const {
-  //   auth: { token: persistedToken },
-  // } = getState();
+  const persistedToken = getState().auth.token;
 
-  // if (!persistedToken) {
-  //   return;
-  // }
+  if (!persistedToken) return;
 
-  // token.set(persistedToken);
+  token.set(persistedToken);
   dispatch(authActions.getCurrentUserRequest());
 
   try {
