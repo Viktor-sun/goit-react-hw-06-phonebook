@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 // import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 // import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { authOperations } from '../../redux/auth';
 
 function Copyright() {
   return (
@@ -44,7 +46,7 @@ function Copyright() {
 // }));
 
 class RegisterPage extends Component {
-  state = { nickname: '', email: '', password: '' };
+  state = { name: '', email: '', password: '' };
 
   handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -56,19 +58,19 @@ class RegisterPage extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    // this.props.onSubmit(this.state);
+    this.props.onRegister(this.state);
     this.reset();
   };
 
   reset = () => {
     this.setState({
-      nickname: '',
+      name: '',
       email: '',
       password: '',
     });
   };
   render() {
-    const { nickname, email, password } = this.state;
+    const { name, email, password } = this.state;
 
     return (
       <Container component="main" maxWidth="xs">
@@ -80,18 +82,18 @@ class RegisterPage extends Component {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form noValidate>
+          <form noValidate onSubmit={this.handleSubmit}>
             <TextField
               autoComplete="fname"
-              name="nickname"
+              name="name"
               onChange={this.handleChange}
-              value={nickname}
+              value={name}
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              id="nickname"
-              label="Nickname"
+              id="name"
+              label="Your name"
               autoFocus
             />
 
@@ -135,4 +137,8 @@ class RegisterPage extends Component {
   }
 }
 
-export default RegisterPage;
+const mapDispatchToProps = {
+  onRegister: authOperations.register,
+};
+
+export default connect(null, mapDispatchToProps)(RegisterPage);

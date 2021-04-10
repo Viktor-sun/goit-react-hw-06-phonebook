@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import Navigation from '../Navigation';
 import AuthNav from '../AuthNav';
+import UserMenu from '../UserMenu';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,6 +57,7 @@ const Header = () => {
           </Typography>
 
           <AuthNav />
+          <UserMenu />
         </Toolbar>
       </Container>
     </AppBar>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 // import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 // import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { authOperations } from '../../redux/auth';
 
 function Copyright() {
   return (
@@ -55,7 +57,7 @@ class LoginPage extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    // this.props.onSubmit(this.state);
+    this.props.onLogin(this.state);
     this.reset();
   };
 
@@ -79,7 +81,7 @@ class LoginPage extends Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form noValidate>
+          <form noValidate onSubmit={this.handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -120,4 +122,8 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+const mapDispatchToProps = {
+  onLogin: authOperations.logIn,
+};
+
+export default connect(null, mapDispatchToProps)(LoginPage);
