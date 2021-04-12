@@ -8,6 +8,7 @@ import ContactForm from '../../components/ContactForm';
 import Filter from '../../components/Filter';
 import ContactList from '../../components/ContactList';
 import Modal from '../../components/Modal';
+import Title from '../../components/Title';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import './ContactsPage.scss';
 
@@ -32,7 +33,7 @@ class ContactsPage extends Component {
       <Container>
         {this.props.isLoading && <Spinner />}
 
-        <h2 className="contacts-title">Contacts</h2>
+        <Title title="Contacts" />
 
         <div className="wrapper-stats">
           <IconButton aria-label="add contact" onClick={this.toggleModal}>
