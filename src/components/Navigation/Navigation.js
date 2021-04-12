@@ -3,23 +3,24 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
+import HomeIcon from '@material-ui/icons/Home';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import { NavLink } from 'react-router-dom';
 import routes from '../../routes';
 import './Navigation.scss';
 
-const Navigation = () => (
+const Navigation = ({ onCloseDrawer }) => (
   <List component="nav" aria-label="main mailbox folders">
     <NavLink
       exact
       to={routes.home}
       className="Navlink"
       activeClassName="Navlink-active"
+      onClick={onCloseDrawer}
     >
       <ListItem button>
         <ListItemIcon>
-          <InboxIcon />
+          <HomeIcon />
         </ListItemIcon>
         <ListItemText primary="Home" />
       </ListItem>
@@ -28,10 +29,11 @@ const Navigation = () => (
       to={routes.contacts}
       className="Navlink"
       activeClassName="Navlink-active"
+      onClick={onCloseDrawer}
     >
       <ListItem button>
         <ListItemIcon>
-          <DraftsIcon />
+          <RecentActorsIcon />
         </ListItemIcon>
         <ListItemText primary="Contacts" />
       </ListItem>
