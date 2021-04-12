@@ -42,7 +42,7 @@ const Header = ({ isAuthenticated }) => {
     <AppBar position="fixed">
       <Container fixed>
         <Drawer anchor="top" open={Boolean(anchorEl)} onClose={handleClose}>
-          <Navigation />
+          <Navigation onCloseDrawer={handleClose} />
         </Drawer>
         <Toolbar>
           <IconButton
