@@ -22,5 +22,13 @@ const getFilterContacts = createSelector(
   },
 );
 
-const selectors = { getAllContacts, getLoading, getFilter, getFilterContacts };
+const getTotalContactsCount = state => getAllContacts(state).length;
+
+const selectors = {
+  getAllContacts,
+  getLoading,
+  getFilter,
+  getFilterContacts,
+  getTotalContactsCount,
+};
 export default selectors;

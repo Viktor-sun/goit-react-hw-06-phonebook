@@ -26,6 +26,7 @@ class ContactsPage extends Component {
 
   render() {
     const { showModal } = this.state;
+    const { totalContacts } = this.props;
 
     return (
       <Container>
@@ -33,10 +34,15 @@ class ContactsPage extends Component {
 
         <h2 className="contacts-title">Contacts</h2>
 
-        <IconButton aria-label="add contact" onClick={this.toggleModal}>
-          <AddIcCallIcon fontSize="large" color="primary" />
-        </IconButton>
-        <span>total contacts: 0</span>
+        <div className="wrapper-stats">
+          <IconButton aria-label="add contact" onClick={this.toggleModal}>
+            <AddIcCallIcon fontSize="large" color="primary" />
+          </IconButton>
+          <p className="contacts-total">
+            total contacts:
+            <span className="contacts-total__count"> {totalContacts}</span>
+          </p>
+        </div>
 
         <Filter />
         <ContactList />
@@ -53,6 +59,7 @@ class ContactsPage extends Component {
 
 const mapStateToProps = state => ({
   isLoading: contactsSelectors.getLoading(state),
+  totalContacts: contactsSelectors.getTotalContactsCount(state),
 });
 
 const mapDispatchToProps = dispatch => ({
