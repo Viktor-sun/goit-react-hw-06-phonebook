@@ -2,12 +2,12 @@ import React, { Component, lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AppBar from './components/AppBar';
+import Footer from './components/Footer';
 import Spinner from './components/Spinner';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import routes from './routes';
 import { authOperations, authSelectors } from './redux/auth';
-import './App.scss';
 
 const HomePage = lazy(() =>
   import('./pages/HomePage/HomePage.js' /* webpackChunkName: "home-page" */),
@@ -85,6 +85,8 @@ class App extends Component {
             />
           </Switch>
         </Suspense>
+
+        <Footer />
       </>
     );
   }

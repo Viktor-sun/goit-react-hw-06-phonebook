@@ -1,6 +1,12 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 body {
   padding-top: 64px;
-  padding-bottom: 40px;
+  padding-bottom: 92px;
+
   font-family: 'Roboto', sans-serif;
   background-image: url('./assets/images/background.jpg');
 }
