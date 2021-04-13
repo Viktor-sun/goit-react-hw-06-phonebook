@@ -2,8 +2,8 @@ import Loader from 'react-loader-spinner';
 
 const Spinner = () => (
   <Loader
-    type="Audio"
-    color="#fbd62a"
+    type="Grid"
+    color="#2641da"
     height={100}
     width={100}
     style={{
