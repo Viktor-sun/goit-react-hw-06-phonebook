@@ -1,24 +1,49 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ContactListItem from './ContactListItem';
-import { contactsOperations } from '../../redux/contacts';
-import { contactsSelectors } from '../../redux/contacts';
+import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import './ContactList.scss';
+import Modal from '../Modal';
+import UpdateContactForm from '../UpdateContactForm';
 
-const ContactList = ({ filterContacts, onDeleteContacts }) => (
-  <ul className="contacts">
-    {filterContacts.map(({ id, name, number }) => (
-      <li key={id} className="contacts__item">
-        <ContactListItem
-          name={name}
-          number={number}
-          onDelete={() => onDeleteContacts(id)}
-        />
-      </li>
-    ))}
-  </ul>
-);
+const ContactList = ({ filterContacts, onDeleteContacts }) => {
+  const [showModal, setshowModal] = useState(false);
+  const [contact, setcontact] = useState(null);
+
+  const toggleModal = useCallback(
+    () => setshowModal(prevShow => !prevShow),
+    [],
+  );
+
+  const setDataAndToggleModal = contact => {
+    setcontact(contact);
+    toggleModal();
+  };
+
+  return (
+    <>
+      <ul className="contacts">
+        {filterContacts.map(({ id, name, number }) => (
+          <li key={id} className="contacts__item">
+            <ContactListItem
+              name={name}
+              number={number}
+              onDelete={() => onDeleteContacts(id)}
+              onOpenModal={() => setDataAndToggleModal({ id, name, number })}
+            />
+          </li>
+        ))}
+      </ul>
+
+      {showModal && (
+        <Modal onCloseModal={toggleModal}>
+          <UpdateContactForm contactData={contact} onUpdate={toggleModal} />
+        </Modal>
+      )}
+    </>
+  );
+};
 
 ContactList.propsTypes = {
   filterContacts: PropTypes.arrayOf(PropTypes.object).isRequired,

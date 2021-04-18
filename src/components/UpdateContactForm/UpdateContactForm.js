@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { contactsOperations, contactsSelectors } from '../../redux/contacts';
-import './ContactForm.scss';
+import { contactsOperations } from '../../redux/contacts';
+import './UpdateContactForm.scss';
 
-class ContactForm extends Component {
-  state = { name: '', number: '' };
+class UpdateContactForm extends Component {
+  state = {
+    id: this.props.contactData.id,
+    name: this.props.contactData.name,
+    number: this.props.contactData.number,
+  };
 
   handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -16,15 +20,11 @@ class ContactForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { name } = this.state;
-    const { contacts, onSubmit, onSave } = this.props;
+    const { onUpdate, onSubmit } = this.props;
 
-    contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())
-      ? alert(`${name} is already in contacts!`)
-      : onSubmit(this.state);
-
+    onSubmit(this.state);
+    onUpdate();
     this.reset();
-    onSave();
   };
 
   reset = () => {
@@ -49,6 +49,7 @@ class ContactForm extends Component {
             value={name}
             placeholder="Vasya Pupkin"
             required
+            autoFocus
           />
         </label>
         <label className="form__field">
@@ -68,23 +69,19 @@ class ContactForm extends Component {
           </span>
         </label>
         <button className="form__button" type="submit">
-          Add contact
+          Update contact
         </button>
       </form>
     );
   }
 }
 
-ContactForm.propsTypes = {
+UpdateContactForm.propsTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  contacts: contactsSelectors.getAllContacts(state),
-});
+const mapDispatchToProps = {
+  onSubmit: contactsOperations.updateContacts,
+};
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: contact => dispatch(contactsOperations.addContacts(contact)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+export default connect(null, mapDispatchToProps)(UpdateContactForm);

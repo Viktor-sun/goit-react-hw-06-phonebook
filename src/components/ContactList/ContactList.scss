@@ -26,7 +26,6 @@
   border-radius: 50%;
 }
 
-.contacts__button {
-  @extend %button;
+.contacts__wrapper-button {
   margin-left: auto;
 }

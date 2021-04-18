@@ -1,0 +1,64 @@
+@import '../../assets/styles/shared.scss';
+
+.form {
+  display: block;
+  padding: 25px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form__field {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form__input {
+  outline: none;
+  display: block;
+  width: 100%;
+  border-radius: 2px;
+  border: 2px solid #ccc;
+  padding: 10px;
+  &:focus {
+    border: 2px solid $accentColor;
+  }
+}
+
+.form__label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.form__error {
+  color: red;
+  text-align: left;
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+}
+
+.form__button {
+  @extend %button;
+  display: inline-block;
+  width: 100%;
+  color: black;
+  font-size: 125%;
+  font-weight: 700;
+}
+
+.form__input:valid:not(:placeholder-shown) {
+  border-color: green;
+}
+
+.form__input:invalid:not(:placeholder-shown) {
+  border-color: red;
+}
+.form__input:invalid:not(:placeholder-shown) + .form__error {
+  opacity: 1;
+  visibility: visible;
+}
