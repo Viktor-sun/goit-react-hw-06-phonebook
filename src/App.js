@@ -1,6 +1,6 @@
-import React, { Component, lazy, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { useEffect, lazy, Suspense } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import AppBar from './components/AppBar';
 import Footer from './components/Footer';
 import Spinner from './components/Spinner';
@@ -35,69 +35,64 @@ const DoNotAuthenticated = lazy(() =>
   ),
 );
 
-class App extends Component {
-  state = {};
+export default function App() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(authSelectors.getLoading);
 
-  componentDidMount() {
-    this.props.getTokenCurrenUser();
-  }
+  useEffect(() => {
+    dispatch(authOperations.getCurrentUser());
+  }, [dispatch]);
 
-  render() {
-    const { isLoading } = this.props;
+  return (
+    <>
+      <AppBar />
 
-    return (
-      <>
-        <AppBar />
+      {isLoading && <Spinner />}
 
-        {isLoading && <Spinner />}
+      <Suspense fallback={<Spinner />}>
+        <Switch>
+          <Route exact path={routes.home}>
+            <HomePage />
+          </Route>
+          <PrivateRoute
+            exect
+            path={routes.contacts}
+            redirectTo={routes.needAuthenticated}
+          >
+            <ContactsPage />
+          </PrivateRoute>
 
-        <Suspense fallback={<Spinner />}>
-          <Switch>
-            <Route exact path={routes.home} component={HomePage} />
-            <PrivateRoute
-              exect
-              path={routes.contacts}
-              component={ContactsPage}
-              redirectTo={routes.needAuthenticated}
-            />
+          <PublicRoute
+            exact
+            path={routes.register}
+            restricted
+            redirectTo={routes.contacts}
+          >
+            <RegisterPage />
+          </PublicRoute>
+          <PublicRoute
+            exact
+            path={routes.login}
+            restricted
+            redirectTo={routes.contacts}
+          >
+            <LoginPage />
+          </PublicRoute>
 
-            <PublicRoute
-              exact
-              path={routes.register}
-              component={RegisterPage}
-              restricted
-              redirectTo={routes.contacts}
-            />
-            <PublicRoute
-              exact
-              path={routes.login}
-              component={LoginPage}
-              restricted
-              redirectTo={routes.contacts}
-            />
+          <PublicRoute
+            exact
+            path={routes.needAuthenticated}
+            restricted
+            redirectTo={routes.contacts}
+          >
+            <DoNotAuthenticated />
+          </PublicRoute>
 
-            <PublicRoute
-              exact
-              path={routes.needAuthenticated}
-              component={DoNotAuthenticated}
-              restricted
-              redirectTo={routes.contacts}
-            />
-          </Switch>
-        </Suspense>
+          <Redirect to={routes.home} />
+        </Switch>
+      </Suspense>
 
-        <Footer />
-      </>
-    );
-  }
+      <Footer />
+    </>
+  );
 }
-
-const mapStateToProps = state => ({
-  isLoading: authSelectors.getLoading(state),
-});
-
-const mapDispatchToProps = {
-  getTokenCurrenUser: authOperations.getCurrentUser,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);

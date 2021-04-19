@@ -1,13 +1,16 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ContactListItem from './ContactListItem';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import './ContactList.scss';
 import Modal from '../Modal';
-import UpdateContactForm from '../UpdateContactForm';
+import FormUpdateContact from '../FormUpdateContact';
 
-const ContactList = ({ filterContacts, onDeleteContacts }) => {
+export default function ContactList() {
+  const dispatch = useDispatch();
+  const filterContacts = useSelector(contactsSelectors.getFilterContacts);
+
   const [showModal, setshowModal] = useState(false);
   const [contact, setcontact] = useState(null);
 
@@ -29,7 +32,7 @@ const ContactList = ({ filterContacts, onDeleteContacts }) => {
             <ContactListItem
               name={name}
               number={number}
-              onDelete={() => onDeleteContacts(id)}
+              onDelete={() => dispatch(contactsOperations.deleteContacts(id))}
               onOpenModal={() => setDataAndToggleModal({ id, name, number })}
             />
           </li>
@@ -38,27 +41,15 @@ const ContactList = ({ filterContacts, onDeleteContacts }) => {
 
       {showModal && (
         <Modal onCloseModal={toggleModal}>
-          <UpdateContactForm contactData={contact} onUpdate={toggleModal} />
+          <FormUpdateContact contactData={contact} onUpdate={toggleModal} />
         </Modal>
       )}
     </>
   );
-};
+}
 
 ContactList.propsTypes = {
-  filterContacts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onDeleteContacts: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
 };
-
-const mapStateToProps = state => ({
-  filterContacts: contactsSelectors.getFilterContacts(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onDeleteContacts: id => dispatch(contactsOperations.deleteContacts(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import AddIcCallIcon from '@material-ui/icons/AddIcCall';
 import IconButton from '@material-ui/core/IconButton';
 import Spinner from '../../components/Spinner';
 import Container from '../../components/Container';
-import ContactForm from '../../components/ContactForm';
+import FormAddContact from '../../components/FormAddContact';
 import Filter from '../../components/Filter';
 import ContactList from '../../components/ContactList';
 import Modal from '../../components/Modal';
@@ -12,59 +12,45 @@ import Title from '../../components/Title';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import './ContactsPage.scss';
 
-class ContactsPage extends Component {
-  state = { showModal: false };
+export default function ContactsPage() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(contactsSelectors.getLoading);
+  const totalContacts = useSelector(contactsSelectors.getTotalContactsCount);
+  const [showModal, setShowModal] = useState(false);
 
-  componentDidMount() {
-    this.props.fetchContacts();
-  }
+  useEffect(() => {
+    dispatch(contactsOperations.fetchContacts());
+  }, [dispatch]);
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-  };
+  const toggleModal = useCallback(
+    () => setShowModal(prevShowModal => !prevShowModal),
+    [],
+  );
 
-  render() {
-    const { showModal } = this.state;
-    const { totalContacts } = this.props;
+  return (
+    <Container>
+      {isLoading && <Spinner />}
 
-    return (
-      <Container>
-        {this.props.isLoading && <Spinner />}
+      <Title title="Contacts" />
 
-        <Title title="Contacts" />
+      <div className="wrapper-stats">
+        <IconButton aria-label="add contact" onClick={toggleModal}>
+          <AddIcCallIcon fontSize="large" color="primary" />
+        </IconButton>
+        <p className="contacts-total">
+          total contacts:
+          <span className="contacts-total__count"> {totalContacts}</span>
+        </p>
+      </div>
 
-        <div className="wrapper-stats">
-          <IconButton aria-label="add contact" onClick={this.toggleModal}>
-            <AddIcCallIcon fontSize="large" color="primary" />
-          </IconButton>
-          <p className="contacts-total">
-            total contacts:
-            <span className="contacts-total__count"> {totalContacts}</span>
-          </p>
-        </div>
+      <Filter />
+      <ContactList />
 
-        <Filter />
-        <ContactList />
-
-        {showModal && (
-          <Modal onCloseModal={this.toggleModal}>
-            <ContactForm onSave={this.toggleModal} />
-          </Modal>
-        )}
-      </Container>
-    );
-  }
+      {showModal && (
+        <Modal onCloseModal={toggleModal}>
+          <FormAddContact onSave={toggleModal} />
+        </Modal>
+      )}
+    </Container>
+  );
 }
-
-const mapStateToProps = state => ({
-  isLoading: contactsSelectors.getLoading(state),
-  totalContacts: contactsSelectors.getTotalContactsCount(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchContacts: () => dispatch(contactsOperations.fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsPage);

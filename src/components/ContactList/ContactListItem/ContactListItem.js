@@ -22,6 +22,7 @@ const ContactListItem = ({ name, number, onDelete, onOpenModal }) => (
 );
 
 ContactListItem.propTypes = {
+  onDelete: PropTypes.func.isRequired,
   onOpenModal: PropTypes.func.isRequired,
 };
 

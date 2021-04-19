@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Navigation from '../Navigation';
 import AuthNav from '../AuthNav';
 import UserMenu from '../UserMenu';
@@ -25,18 +25,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Header = ({ isAuthenticated }) => {
+export default function Header() {
   const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
 
   return (
     <AppBar position="fixed">
@@ -63,10 +62,4 @@ const Header = ({ isAuthenticated }) => {
       </Container>
     </AppBar>
   );
-};
-
-const mapStateToProps = state => ({
-  isAuthenticated: authSelectors.getIsAuthenticated(state),
-});
-
-export default connect(mapStateToProps)(Header);
+}
