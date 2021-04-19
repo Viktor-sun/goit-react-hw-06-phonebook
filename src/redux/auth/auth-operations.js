@@ -1,5 +1,6 @@
 import axios from 'axios';
 import authActions from './auth-actions';
+import notifications from '../../pnotify';
 
 axios.defaults.baseURL = 'https://goit-phonebook-api.herokuapp.com';
 
@@ -20,8 +21,10 @@ const register = credentials => async dispatch => {
 
     token.set(response.data.token);
     dispatch(authActions.registerSuccess(response.data));
+    notifications.sucess('You are registered.');
   } catch (error) {
     dispatch(authActions.registerError(error.message));
+    notifications.error(error.message);
   }
 };
 
@@ -33,8 +36,10 @@ const logIn = credentials => async dispatch => {
 
     token.set(response.data.token);
     dispatch(authActions.loginSuccess(response.data));
+    notifications.sucess('You are logged in.');
   } catch (error) {
     dispatch(authActions.loginError(error.message));
+    notifications.error(error.message);
   }
 };
 

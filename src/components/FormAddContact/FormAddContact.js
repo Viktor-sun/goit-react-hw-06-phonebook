@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import './FormAddContact.scss';
+import notifications from '../../pnotify';
 
 export default function FormAddContact({ onSave }) {
   const dispatch = useDispatch();
@@ -17,11 +18,17 @@ export default function FormAddContact({ onSave }) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const newContact = { name, number };
+    const isSameContact = contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase(),
+    );
 
-    contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())
-      ? alert(`${name} is already in contacts!`)
-      : dispatch(contactsOperations.addContacts(newContact));
+    if (isSameContact) {
+      notifications.alert(`${name} is already in contacts!`);
+      return;
+    }
+
+    const newContact = { name, number };
+    dispatch(contactsOperations.addContacts(newContact));
 
     onSave();
     reset();

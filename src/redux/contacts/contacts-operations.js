@@ -13,6 +13,7 @@ import {
   updateContactSuccess,
   updateContactError,
 } from './contacts-actions';
+import notifications from '../../pnotify';
 
 const fetchContacts = () => dispatch => {
   dispatch(fetchContactsRequest());
@@ -28,8 +29,14 @@ const addContacts = contact => dispatch => {
 
   axios
     .post('/contacts', contact)
-    .then(({ data }) => dispatch(addContactSuccess(data)))
-    .catch(error => dispatch(addContactError(error.message)));
+    .then(({ data }) => {
+      dispatch(addContactSuccess(data));
+      notifications.sucess('Contact added.');
+    })
+    .catch(error => {
+      dispatch(addContactError(error.message));
+      notifications.error(error.message);
+    });
 };
 
 const deleteContacts = id => dispatch => {
@@ -37,8 +44,14 @@ const deleteContacts = id => dispatch => {
 
   axios
     .delete(`/contacts/${id}`)
-    .then(() => dispatch(deleteContactSuccess(id)))
-    .catch(error => dispatch(deleteContactError(error.message)));
+    .then(() => {
+      dispatch(deleteContactSuccess(id));
+      notifications.sucess('Contact deleted.');
+    })
+    .catch(error => {
+      dispatch(deleteContactError(error.message));
+      notifications.error(error.message);
+    });
 };
 
 const updateContacts = contact => dispatch => {
@@ -47,8 +60,14 @@ const updateContacts = contact => dispatch => {
 
   axios
     .patch(`/contacts/${id}`, { name, number })
-    .then(() => dispatch(updateContactSuccess(contact)))
-    .catch(error => dispatch(updateContactError(error.message)));
+    .then(() => {
+      dispatch(updateContactSuccess(contact));
+      notifications.sucess('Contact updated.');
+    })
+    .catch(error => {
+      dispatch(updateContactError(error.message));
+      notifications.error(error.message);
+    });
 };
 
 const operations = {
