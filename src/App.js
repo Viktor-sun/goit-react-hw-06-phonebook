@@ -55,7 +55,7 @@ export default function App() {
             <HomePage />
           </Route>
           <PrivateRoute
-            exect
+            exact
             path={routes.contacts}
             redirectTo={routes.needAuthenticated}
           >
