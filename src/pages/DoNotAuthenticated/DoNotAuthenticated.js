@@ -8,7 +8,7 @@ import './DoNotAuthenticated.scss';
 const DoNotAuthenticated = () => {
   return (
     <Container fixed>
-      <Title title="Please Authenticated!"></Title>
+      <Title title="Please Login!"></Title>
       <p className="DoNotAuthenticated__description">
         You need to <NavLink to={routes.login}>log in</NavLink> or{' '}
         <NavLink to={routes.register}>log up</NavLink> to use the phone book.

@@ -23,6 +23,11 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
+  '@media screen and (max-width: 390px)': {
+    title: {
+      display: 'none',
+    },
+  },
 }));
 
 export default function Header() {
